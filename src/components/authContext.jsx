@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase'; // Import your Firebase configuration
 
 // Create the context
-const AuthContext = createContext();
+export const AuthContext = createContext("");
 
 // Create a provider component
 const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [name, setName] = useState("")
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  return <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>;
+return <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>;
 };
 
 // Create a custom hook to use the context
