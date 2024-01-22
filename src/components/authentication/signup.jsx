@@ -1,7 +1,8 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import { auth } from "../../firebase"
+import { auth, db } from "../../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth"
+import { addDoc, collection, setDoc, doc } from "firebase/firestore"
 
 function SignUp(){
 
@@ -22,11 +23,26 @@ function SignUp(){
     }
 
     //Handling signin authentication
+
+    const usersRef = collection(db, "users")
     const handleSignUpAuth =async (e) => {
         e.preventDefault()
         try{
-            await createUserWithEmailAndPassword(auth, userDetails.email, userDetails.password)
+            const res = await createUserWithEmailAndPassword(auth, userDetails.email, userDetails.password, userDetails.displayName)
             console.log(auth)
+
+            await res.user.updateProfile({
+                displayName: userDetails.displayName
+            });
+
+            // saving user in firestore database
+            await addDoc(usersRef, {
+                uid: auth.currentUser.uid,
+                displayName: res.user.displayName,
+                email: auth.currentUser.email
+            })
+            console.log(userDetails.displayName)
+            console.log(auth.currentUser.displayName)
         }catch{error => {
             console.log(error)
         }}
