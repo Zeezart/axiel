@@ -56,37 +56,40 @@ function Account(){
         setNewMessage("");
       };
 
-    
+      // const usersRef = collection(db, "users");
+      // console.log(usersRef)
     return(
-        <>
-            <h1>WELCOME {currentUser&& currentUser.email}</h1>
-            {/* <SearchUsers /> */}
-            {/* {messages.map((id,text) => {
-                <div key={id}>
-                    <p>{text}</p>
+        <div className="chat-page">
+            {/* <h1>WELCOME {currentUser&& currentUser.email}</h1> */}
+            <div className="header">
+              <h1>WELCOME TO KHAYR CHATGROUP</h1>
+            </div>
+
+            <div className="all-messages">
+              {messages.map((message) => (
+                <div key={message.id} className="message">
+                  <span className="user">{message.user}:</span> {message.text}
                 </div>
-            })} */}
+              ))}
+            </div>
 
-            {messages.map((message) => (
-          <div key={message.id} className="message">
-            <span className="user">{message.user}:</span> {message.text}
-          </div>
-            ))}
-
-            <form onSubmit={handleSubmit} className="new-message-form">
-            <input
-            type="text"
-            value={newMessage}
-            onChange={(event) => setNewMessage(event.target.value)}
-            className="new-message-input"
-            placeholder="Type your message here..."
-            />
-            <button type="submit" className="send-button">
-            Send
-            </button>
-        </form>
+              <div className="input-message-box">
+                <form onSubmit={handleSubmit} className="new-message-form">
+                  <input
+                  type="text"
+                  value={newMessage}
+                  onChange={(event) => setNewMessage(event.target.value)}
+                  className="new-message-input"
+                  placeholder="Type your message here..."
+                  />
+                  <button type="submit" className="send-button">
+                  Send
+                  </button>
+                </form>
+              </div>
+            
             <button onClick={logOut}>Log Out</button>
-        </>
+        </div>
     )
 }
 

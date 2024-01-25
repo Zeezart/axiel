@@ -50,49 +50,7 @@ function SignUp(){
     }
     return(
         <>
-            {/* <form onSubmit={handleSignUpAuth}>
-                <input 
-                    type="text" 
-                    name="displayName" 
-                    placeholder="Username"
-                    onChange={handleInputChange}
-                    value={userDetails.displayName} 
-                />
-                <input 
-                    type="email" 
-                    name="email" 
-                    placeholder="Email Address"
-                    onChange={handleInputChange}
-                    value={userDetails.email} 
-                />
-
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="password"
-                    onChange={handleInputChange}
-                    value={userDetails.value}
-                />
-
-                <button type="submit">Create Account</button>
-            </form>
-            <p>Already have an account? <Link to="/">Sign In</Link></p> */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            
             <div id="signin">
             <div className="signin-form-container">
                 <div className="illustration-image">

@@ -12,7 +12,7 @@ function SearchUsers(){
 
     const currentUser = useContext(AuthContext)
     const handleSearch = async() => {
-        const usersRef = collection(db, "users");
+        c
         const q = query(usersRef, where("displayName", "==", username));
         try{
             const querySnapshot = await getDoc(q);
