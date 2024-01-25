@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import { auth, provider } from "../../firebase"
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
+import illustration from "../../assets/signin.svg"
 // import Cookie from "universal-cookie"
 // const cookie = new Cookie()
 
@@ -44,31 +45,45 @@ function SignIn(){
         }}
     }
     return(
-        <>
-            <form onSubmit={handleSignInAuth}>
-                <input 
-                    type="email" 
-                    name="email" 
-                    placeholder="Email Address"
-                    onChange={handleInputChange}
-                    value={userInput.email} 
-                />
+        <div id="signin">
+            <div className="signin-form-container">
+                <div className="illustration-image">
+                    <img src={illustration}/>
+                </div>
+                <div className="form-div">
+                    <h1>Chatroom: <span>KHAYR</span></h1>
+                    <p>Enter your details to join the room</p>
+                    <form onSubmit={handleSignInAuth}>
+                        <div className="input-div">
+                            <input 
+                                type="email" 
+                                name="email" 
+                                placeholder="Email Address"
+                                onChange={handleInputChange}
+                                value={userInput.email} 
+                            />
+                        </div>
 
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="password"
-                    onChange={handleInputChange}
-                    value={userInput.value}
-                />
+                        <div className="input-div">
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="password"
+                                onChange={handleInputChange}
+                                value={userInput.value}
+                            />
+                        </div>
 
-                <button type="submit">Sign In</button>
-                
-            </form>
-            <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
-            <p>or</p>
-            <button onClick={signInWithGoogle}>Sign in with Google</button>
-        </>
+                        <button type="submit" className="primary-btn">Sign In</button>
+                        
+                    </form>
+                    
+                    <p>or</p>
+                    <button onClick={signInWithGoogle} className="secondary-btn">Sign in with Google</button>
+                    <p className="paragraph-link">Don't have an account? <Link to="/signup">Sign Up</Link></p>
+                </div>
+            </div>
+        </div>
     )
 }
 

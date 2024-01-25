@@ -12,8 +12,9 @@ function App() {
  
 
   return (
-    <>
-      
+    <section id="app">
+      <div className='app'>
+
         <Router>
           <AuthProvider>
             <Routes>
@@ -23,7 +24,8 @@ function App() {
             </Routes>
           </AuthProvider>
         </Router>
-    </>
+      </div>
+    </section>
   )
 }
 

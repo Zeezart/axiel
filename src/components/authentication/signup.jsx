@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { auth, db } from "../../firebase"
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { addDoc, collection, setDoc, doc } from "firebase/firestore"
+import illustration from "../../assets/signin.svg"
 
 function SignUp(){
 
@@ -25,7 +26,7 @@ function SignUp(){
     //Handling signin authentication
 
     const usersRef = collection(db, "users")
-    const usersChatRef = collection(db, "usersChat")
+    // const usersChatRef = collection(db, "usersChat")
     
     const handleSignUpAuth =async (e) => {
         e.preventDefault()
@@ -40,16 +41,16 @@ function SignUp(){
             
             
             
-            await addDoc(usersChatRef, {
-                uid: auth.currentUser.uid
-            })
+            // await addDoc(usersChatRef, {
+            //     uid: auth.currentUser.uid
+            // })
         }catch{error => {
             console.log(error)
         }}
     }
     return(
         <>
-            <form onSubmit={handleSignUpAuth}>
+            {/* <form onSubmit={handleSignUpAuth}>
                 <input 
                     type="text" 
                     name="displayName" 
@@ -75,7 +76,68 @@ function SignUp(){
 
                 <button type="submit">Create Account</button>
             </form>
-            <p>Already have an account? <Link to="/">Sign In</Link></p>
+            <p>Already have an account? <Link to="/">Sign In</Link></p> */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div id="signin">
+            <div className="signin-form-container">
+                <div className="illustration-image">
+                    <img src={illustration}/>
+                </div>
+                <div className="form-div">
+                    <h1>Chatroom: <span>KHAYR</span></h1>
+                    <p>Enter your details to join the room</p>
+                    <form onSubmit={handleSignUpAuth}>
+                        <div className="input-div">
+                            <input 
+                                type="text" 
+                                name="displayName" 
+                                placeholder="Username"
+                                onChange={handleInputChange}
+                                value={userDetails.displayName} 
+                            />
+                        </div>
+                        <div className="input-div">
+                            <input 
+                                type="email" 
+                                name="email" 
+                                placeholder="Email Address"
+                                onChange={handleInputChange}
+                                value={userDetails.email} 
+                            />
+                        </div>
+
+                        <div className="input-div">
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="password"
+                                onChange={handleInputChange}
+                                value={userDetails.value}
+                            />
+                        </div>
+
+                        <button type="submit" className="primary-btn">Create Account</button>
+                        
+                    </form>
+                    <p className="paragraph-link">Already have an account? <Link to="/">Sign In</Link></p>
+                </div>
+            </div>
+        </div>
         </>
     )
 }
