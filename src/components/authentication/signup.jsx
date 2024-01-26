@@ -1,18 +1,21 @@
-import React, { useState } from "react"
+import React, { useState,useContext } from "react"
 import { Link } from "react-router-dom"
 import { auth, db } from "../../firebase"
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { addDoc, collection, setDoc, doc } from "firebase/firestore"
 import illustration from "../../assets/signin.svg"
+import { AuthContext } from "../authContext"
 
 function SignUp(){
 
     //Handling geetting user's sign in details
-    const [userDetails, setUserDetails] = useState({
-        displayName:"",
-        email:"",
-        password:""
-    })
+    // const [userDetails, setUserDetails] = useState({
+    //     displayName:"",
+    //     email:"",
+    //     password:""
+    // })
+
+    const {userDetails, setUserDetails} = useContext(AuthContext)
     const handleInputChange = (e) => {
         const {name,value} = e.target
         setUserDetails(prevValue=>{

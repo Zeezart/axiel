@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useState, useEffect, useRef } from "react"
 import { auth, db } from "../firebase"
 import {signOut} from "firebase/auth"
 import { AuthContext } from "./authContext"
@@ -20,6 +20,7 @@ function Account(){
     const [messages, setMessages] = useState([])
     const [newMessage, setNewMessage] = useState("");
     const messagesRef = collection(db, "messages");
+    const {userDetails} = useContext(AuthContext)
     // useEffect(() => {
     //     collection(db,"messages").orderBy("createdAt").limit(50).onSnapshot(snapshot => {
     //         setMessages(snapshot.docs.map(doc => doc.data))
@@ -36,7 +37,7 @@ function Account(){
           snapshot.forEach((doc) => {
             messages.push({ ...doc.data(), id: doc.id });
           });
-          console.log(messages);
+          // console.log(messages);
           setMessages(messages);
         });
 
@@ -50,7 +51,8 @@ function Account(){
         await addDoc(messagesRef, {
           text: newMessage,
           createdAt: serverTimestamp(),
-          user: currentUser.displayName, 
+          user: auth.currentUser.displayName ? auth.currentUser.displayName : userDetails.displayName,
+          uid: auth.currentUser.uid
         });
     
         setNewMessage("");
@@ -58,22 +60,30 @@ function Account(){
 
       // const usersRef = collection(db, "users");
       // console.log(usersRef)
+    
+    const scroll = useRef()
     return(
         <div className="chat-page">
             {/* <h1>WELCOME {currentUser&& currentUser.email}</h1> */}
             <div className="header">
               <h1>WELCOME TO KHAYR CHATGROUP</h1>
+              <button onClick={logOut}>LOG OUT</button>
             </div>
 
-            <div className="all-messages">
+            <div className="all-messages" >
               {messages.map((message) => (
-                <div key={message.id} className="message">
-                  <span className="user">{message.user}:</span> {message.text}
+                <div key={message.id} className={`message ${message.uid === auth.currentUser.uid ? 'sent' : 'received'}`}>
+                  {message.uid === auth.currentUser.uid ?  null :  <p className="sender-name"><small>{message.user}</small></p>}
+                  <div>
+                    <span className="user">{message.text}</span> 
+                  </div>
                 </div>
               ))}
-            </div>
 
-              <div className="input-message-box">
+             
+    
+            </div>
+              <div className="input-message-box" scroll={scroll}>
                 <form onSubmit={handleSubmit} className="new-message-form">
                   <input
                   type="text"
@@ -86,9 +96,7 @@ function Account(){
                   Send
                   </button>
                 </form>
-              </div>
-            
-            <button onClick={logOut}>Log Out</button>
+              </div>              <div ref={scroll}></div>
         </div>
     )
 }

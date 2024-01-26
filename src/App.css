@@ -109,3 +109,96 @@ body{
     }
 }
 
+.chat-page{
+    height: 80vh;
+    max-height: 80vh;
+    background-color: #fff;
+    position: relative;
+    .header{
+        background-color: #00193F;
+        color: #fff;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem 1rem;
+        border-top-right-radius: 20px;
+        border-top-left-radius: 20px;
+        button{
+            padding: 0.8rem;
+            background-color: #f1f1f1;
+            font: inherit;
+            color: black;
+            border: none;
+        }
+        button:hover{
+            background-color: #e2e2e2;
+        }
+    }
+    .all-messages{
+        overflow-y: scroll;
+        max-height: 48vh;
+        margin-top: 10px;
+        padding: 1rem;
+        .message{
+            
+            /* max-width: 75%; */
+            clear: both;
+            filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25));
+            padding: 0.3rem;
+            word-wrap: break-word;
+            max-width: 70%;
+            margin-bottom: 10px;
+            .sender-name{
+                color: #00193F;
+            }
+        }
+    }
+    .received{
+        background-color: #A5B2C5;
+        left: 0;
+        float: left;
+    }
+    .sent{
+        background-color: #CECECE;
+        right:0;
+        float: right;
+        
+    }
+}
+
+.input-message-box{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    .new-message-form {
+        display: flex;
+        width: 100%;
+        padding: 1rem;
+        gap: 2rem;
+        .new-message-input {
+          flex: 1;
+          border: none;
+          border-bottom: 2px solid #00193F;
+          outline: none;
+          background: transparent;
+          font-size: 16px;
+          color: #333;
+          padding: 1rem;
+          border-radius: 5px 0 0 5px;
+        }
+        
+        .send-button {
+          border: none;
+          outline: none;
+          background: #00193F;
+          color: #fff;
+          font-size: 1rem;
+          font-weight: bold;
+          padding: 1rem;
+        }
+        .send-button:hover{
+            background-color: #003688;
+        }
+      }    
+}

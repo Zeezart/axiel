@@ -10,6 +10,11 @@ const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [name, setName] = useState("")
   const navigate = useNavigate();
+  const [userDetails, setUserDetails] = useState({
+    displayName:"",
+    email:"",
+    password:""
+})
 
   useEffect(() => {
     // Set up an observer to watch for changes in authentication state
@@ -29,7 +34,7 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-return <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>;
+return <AuthContext.Provider value={{currentUser,userDetails,setUserDetails}}>{children}</AuthContext.Provider>;
 };
 
 // Create a custom hook to use the context
