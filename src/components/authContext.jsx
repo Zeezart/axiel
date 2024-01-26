@@ -20,7 +20,7 @@ const AuthProvider = ({ children }) => {
     // Set up an observer to watch for changes in authentication state
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
-      console.log(user)
+      
       if (user) {
         // Redirect to the account route if the user is signed in
         navigate('/account');
