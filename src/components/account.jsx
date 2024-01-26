@@ -66,7 +66,7 @@ function Account(){
         <div className="chat-page">
             {/* <h1>WELCOME {currentUser&& currentUser.email}</h1> */}
             <div className="header">
-              <h1>WELCOME TO KHAYR CHATGROUP</h1>
+              <h1>KHAYR</h1>
               <button onClick={logOut}>LOG OUT</button>
             </div>
 
