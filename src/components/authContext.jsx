@@ -14,7 +14,9 @@ const AuthProvider = ({ children }) => {
     displayName:"",
     email:"",
     password:""
-})
+  })
+  const [room, setRoom] = useState([])
+  const [inChat, setInChat] = useState(false)
 
   useEffect(() => {
     // Set up an observer to watch for changes in authentication state
@@ -23,7 +25,8 @@ const AuthProvider = ({ children }) => {
       
       if (user) {
         // Redirect to the account route if the user is signed in
-        navigate('/account');
+        // navigate('/account');
+        navigate('/welcome');
       } else {
         // Redirect to the home route if the user is not signed in
         navigate('/');
@@ -34,7 +37,7 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-return <AuthContext.Provider value={{currentUser,userDetails,setUserDetails}}>{children}</AuthContext.Provider>;
+return <AuthContext.Provider value={{currentUser,userDetails,setUserDetails,room,setRoom, inChat, setInChat}}>{children}</AuthContext.Provider>;
 };
 
 // Create a custom hook to use the context

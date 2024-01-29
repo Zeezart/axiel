@@ -8,13 +8,6 @@ import { AuthContext } from "../authContext"
 
 function SignUp(){
 
-    //Handling geetting user's sign in details
-    // const [userDetails, setUserDetails] = useState({
-    //     displayName:"",
-    //     email:"",
-    //     password:""
-    // })
-
     const {userDetails, setUserDetails} = useContext(AuthContext)
     const handleInputChange = (e) => {
         const {name,value} = e.target
@@ -26,6 +19,7 @@ function SignUp(){
         })
     }
 
+    const [error, setError] = useState(false)
     //Handling signin authentication
 
     const usersRef = collection(db, "users")
@@ -42,18 +36,17 @@ function SignUp(){
                 email: auth.currentUser.email
             })
             
-            
-            
-            // await addDoc(usersChatRef, {
-            //     uid: auth.currentUser.uid
-            // })
         }catch{error => {
-            console.log(error)
+            console.error(error)
+            setError(true)
+
+            
         }}
+        console.log(error)
     }
     return(
         <>
-            
+            {error ? <p>Something went wrong;<br/>Ensure you are connected to internet or you provide the information according to the instruction</p> : null}
             <div id="signin">
             <div className="signin-form-container">
                 <div className="illustration-image">
@@ -90,6 +83,7 @@ function SignUp(){
                                 onChange={handleInputChange}
                                 value={userDetails.value}
                             />
+                            {userDetails.password.length < 6 ? <p style={{textAlign: "left", color: "red"}}><small>minimum of 8 characters</small></p> : null}
                         </div>
 
                         <button type="submit" className="primary-btn">Create Account</button>

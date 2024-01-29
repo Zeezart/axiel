@@ -141,8 +141,7 @@ body{
         margin-top: 10px;
         padding: 1rem;
         .message{
-            
-            /* max-width: 75%; */
+            position: relative;
             clear: both;
             filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25));
             padding: 0.5rem 1rem;
@@ -150,27 +149,44 @@ body{
             word-wrap: break-word;
             max-width: 70%;
             margin-bottom: 10px;
+            z-index: 0;
             .sender-name{
                 color: #00193F;
             }
         }
-    }
-    .received{
-        background-color: #A5B2C5;
-        left: 0;
-        float: left;
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
-        border-bottom-left-radius: 20px;
-    }
-    .sent{
-        background-color: #CECECE;
-        right:0;
-        float: right;
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 20px;
-        
+        .received{
+            background-color: #A5B2C5;
+            left: 0;
+            float: left;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            border-bottom-left-radius: 20px;
+        }
+        .sent{
+            background-color: #CECECE;
+            right:0;
+            float: right;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 20px;
+            
+        }
+        .dropdown-options{
+            position: absolute;
+            background-color: #d7dbe4;
+            display: flex;
+            flex-direction: column;
+            top: 30px;
+            right: 7px;
+            color: #555555;
+            z-index: 1000;
+            p{
+                padding: 1rem;
+            }
+            p:hover{
+                background-color: #c4c4c4;
+            }
+        }
     }
 }
 

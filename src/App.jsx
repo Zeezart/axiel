@@ -7,6 +7,7 @@ import { AuthProvider } from './components/authContext'
 import SignIn from './components/authentication/signin'
 import SignUp from './components/authentication/signup'
 import Account from './components/account'
+import WelcomePage from './components/welcomePage'
 
 function App() {
  
@@ -20,6 +21,7 @@ function App() {
             <Routes>
               <Route path='/' exact element={<SignIn/>}></Route>
               <Route path='/signup'  element={<SignUp/>}></Route>
+              <Route path = '/welcome' element={<WelcomePage />}></Route>
               <Route path='/account'  element={<Account/>}></Route>
             </Routes>
           </AuthProvider>
