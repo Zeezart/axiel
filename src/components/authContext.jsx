@@ -17,6 +17,7 @@ const AuthProvider = ({ children }) => {
   })
   const [room, setRoom] = useState([])
   const [inChat, setInChat] = useState(false)
+  const [communities, setCommunities] = useState([])
 
   useEffect(() => {
     // Set up an observer to watch for changes in authentication state
@@ -37,7 +38,7 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-return <AuthContext.Provider value={{currentUser,userDetails,setUserDetails,room,setRoom, inChat, setInChat}}>{children}</AuthContext.Provider>;
+return <AuthContext.Provider value={{currentUser,userDetails,setUserDetails,room,setRoom, inChat, setInChat, communities, setCommunities}}>{children}</AuthContext.Provider>;
 };
 
 // Create a custom hook to use the context

@@ -9,6 +9,7 @@ import { AuthContext } from "../authContext"
 function SignUp(){
 
     const {userDetails, setUserDetails} = useContext(AuthContext)
+    const {room} = useContext(AuthContext)
     const handleInputChange = (e) => {
         const {name,value} = e.target
         setUserDetails(prevValue=>{
@@ -33,7 +34,8 @@ function SignUp(){
             await addDoc(usersRef, {
                 uid: auth.currentUser.uid,
                 displayName: userDetails.displayName,
-                email: auth.currentUser.email
+                email: auth.currentUser.email,
+                communities: []
             })
             
         }catch{error => {
@@ -53,7 +55,7 @@ function SignUp(){
                     <img src={illustration}/>
                 </div>
                 <div className="form-div">
-                    <h1>Chatroom: <span>KHAYR</span></h1>
+                    <h1><span>AXIEL</span></h1>
                     <p>Enter your details to join the room</p>
                     <form onSubmit={handleSignUpAuth}>
                         <div className="input-div">
