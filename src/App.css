@@ -295,10 +295,10 @@ body{
     #account{
         .sidebar{
             display: none;
-            .your-communities p, .account-nav p{
+            .your-communities .community, .account-nav p{
             padding: 1rem 2rem;
             }
-            .your-communities p:hover, .account-nav p:hover{
+            .your-communities .community:hover, .account-nav p:hover{
                 background-color: grey;
             }
         }

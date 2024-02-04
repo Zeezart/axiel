@@ -5,34 +5,34 @@ import { AuthContext } from "./authContext"
 import { useNavigate } from "react-router-dom"
 
 function WelcomePage(){
+    //...............defining state..................
     const [joinCommunityInput, setJoinCommunityInput] = useState("")
-    const { setCommunities } = useContext(AuthContext)
+    const { setCommunities,setUserdata } = useContext(AuthContext)
     const {room, setRoom} = useContext(AuthContext)
     const navigate = useNavigate()
 
-    //create community
-    const createCommunityRef = collection(db, "communities");
+    // //create community
+    // const createCommunityRef = collection(db, "users");
 
-    useEffect(() => {
-        const queryCommunities = query(
-            createCommunityRef,
-        //   where("room", "==", room),
-        //   orderBy("createdAt")
-        );
-        const unsuscribe = onSnapshot(queryCommunities, (snapshot) => {
-          let communities = [];
-          snapshot.forEach((doc) => {
-            communities.push({ ...doc.data(), id: doc.id });
-          });
-          // console.log(messages);
-          setCommunities(communities);
-        });
+    // useEffect(() => {
+    //     const queryCommunities = query(
+    //         createCommunityRef,
+          
+    //     );
+    //     const unsuscribe = onSnapshot(queryCommunities, (snapshot) => {
+    //       let communities = [];
+    //       snapshot.forEach((doc) => {
+    //         communities.push({ ...doc.data(), id: doc.id });
+    //       });
+    //       // console.log(messages);
+    //       setCommunities(communities);
+    //     });
 
-        return () => unsuscribe();
-    },[])
+    //     return () => unsuscribe();
+    // },[])
 
 
-    //join community
+    //..................join community.........................
     const usersRef = collection(db, "users")
     const handleJoinCommunity = async (e,uid) => {
         e.preventDefault()
@@ -66,19 +66,45 @@ function WelcomePage(){
                 try {
                     await updateDoc(userDocRef, {
                     communities: arrayUnion(communityToAdd),
-                });
+                    });
 
                 } catch (error) {
                     console.error('Error adding element to the array:', error);
                 }
-            }else{
-                console.log('No documents found.');
-            } 
+                setUserdata(userData)
+                console.log(userData)
+            //     const usersCollectionRef = collection(db, 'users');
+            //     const communityRef = collection(db, "communities")
+
+            //     const querySnapshot2 = await getDocs(usersCollectionRef);
+
+            //     querySnapshot2.forEach( (doc) => {
+                    
+            //     const documentId = doc.id;
+            
+            //     console.log(userData.email)
+            //     console.log(typeof userData.communities)
+            //         if (userData.communities.length > 0){
+            //             userData.communities.forEach(async (eachCommunity) => {
+            //                 try{
+            //                     await addDoc(communityRef, {
+            //                         roomName: eachCommunity
+            //                     })
+            //                 }catch{}
+            //             })
+            //         }else{
+            //             console.log("community not created")
+            //         }
+            //     });
+            //         }else{
+            //     console.log('No documents found.');
+            // } 
+        }
+            
                
         }
-
-       
-        // navigate("/account")
+        
+        navigate("/account")
     }
 
     return(
@@ -102,6 +128,7 @@ function WelcomePage(){
                             <button type="submit" className="primary-btn">Join</button>
                     </form>            
                 </div>
+                
             </div>
         </div>
     )

@@ -3,14 +3,21 @@ import { auth, db } from "../firebase"
 import {signOut} from "firebase/auth"
 import { AuthContext } from "./authContext"
 import {collection, onSnapshot,orderBy,query,addDoc,serverTimestamp,where, deleteDoc, doc, updateDoc, getDoc} from "firebase/firestore"
-import { FaElementor, FaEllipsisH, FaBars, FaTimes } from "react-icons/fa"
+import { FaBars, FaTimes } from "react-icons/fa"
 import SearchUsers from "./searchUsers"
  
 function Account(){
-
+    //................defining states........................
     const currentUser = useContext(AuthContext)
-    const {room} = useContext(AuthContext)
+    const {room, setRoom} = useContext(AuthContext)
+    const [messages, setMessages] = useState([])
+    const [newMessage, setNewMessage] = useState("");
+    const messagesRef = collection(db, "messages");
+    const {userDetails} = useContext(AuthContext)
+    const {userdata} = useContext(AuthContext)
 
+
+    //................handling logout.................................
     const logOut = async() => {
         try{
             await signOut(auth)
@@ -19,14 +26,15 @@ function Account(){
         }}
     }
 
-    const [messages, setMessages] = useState([])
-    const [newMessage, setNewMessage] = useState("");
-    const messagesRef = collection(db, "messages");
-    const {userDetails} = useContext(AuthContext)
-    const {communities} = useContext(AuthContext)
+    //...............handling community selection in sidebar...................
+    const handleCommunitySelection = (community) => {
+      return () => {
+        setRoom(community);
+      };
+    }
 
-    // console.log(communities)
 
+    //...............manging changes based on room change...........................
     useEffect(() => {
         const queryMessages = query(
           messagesRef,
@@ -35,19 +43,19 @@ function Account(){
         );
 
         const unsuscribe = onSnapshot(queryMessages, (snapshot) => {
-          console.log('New messages')
           let messages = [];
           snapshot.forEach((doc) => {
             messages.push({ ...doc.data(), id: doc.id });
           });
-          // console.log(messages);
+          
           setMessages(messages);
-          console.log(messages.text)
         });
 
         return () => unsuscribe();
-    },[])
+    },[room])
 
+
+    //......................handling send message....................
     const handleSubmit = async (event) => {
         event.preventDefault();
     
@@ -64,20 +72,22 @@ function Account(){
       };
 
     const scroll = useRef()
+
+    //.............handling display sidebarn mobile...........................
     const [showSidebar, setShowSidebar] = useState(false)
     const handleShowSidebar = () => {
       setShowSidebar(!showSidebar)
     }
+
+   //........................page display..........................
     return(
       <div id="account">
           <div className={`sidebar ${showSidebar ? 'open-sidenav' : ''}`}>
             <div className="sidebar-header"><p>Your Communities</p></div>
-            <div className="your-communities">
-            {communities.map((community) => (
-                <p>{community.roomName}</p>
-            ))}
-        
-            
+            <div className="your-communities" >
+                {userdata && userdata.communities.map((community)=>(
+                    <div className="community" key={community} onClick={handleCommunitySelection(community)}>{community}</div>
+                ))}
             </div>
             <div className="account-nav">
               
@@ -95,7 +105,7 @@ function Account(){
 
               <div className="all-messages" >
                 {messages.map((message,index) => (
-                  !message.deleted && (<div key={message.id} className={`message ${message.uid === auth.currentUser.uid ? 'sent' : 'received'}`}>
+                  (<div key={message.id} className={`message ${message.uid === auth.currentUser.uid ? 'sent' : 'received'}`}>
                     <div style={{display: "flex", justifyContent:"space-between", alignItems: "center", gap:"2rem"}}>
                       {message.uid === auth.currentUser.uid ?  null :  <p className="sender-name"><small>{message.user}</small></p>}
                     </div>
@@ -128,20 +138,3 @@ function Account(){
 
 
 export default Account
-
-
-// // const userId = auth.currentUser.uid;
-// const userDocRef = collection(db, 'users');
-
-// const querySnapshot = await getDocs(userDocRef);
-
-// // Iterate over each document and retrieve its ID
-// querySnapshot.forEach((doc) => {
-//   // Access the document ID
-//   const documentId = doc.id;
-//   console.log('Document ID:', documentId);
-
-//   // Access other data in the document
-//   const userData = doc.data();
-//   console.log('User Data:', userData);
-// });
