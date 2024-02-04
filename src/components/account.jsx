@@ -3,7 +3,7 @@ import { auth, db } from "../firebase"
 import {signOut} from "firebase/auth"
 import { AuthContext } from "./authContext"
 import {collection, onSnapshot,orderBy,query,addDoc,serverTimestamp,where, deleteDoc, doc, updateDoc, getDoc} from "firebase/firestore"
-import { FaBars, FaTimes } from "react-icons/fa"
+import { FaBars, FaTimes,FaTelegramPlane, FaEllipsisV, FaVideo, FaPhone } from "react-icons/fa"
 import SearchUsers from "./searchUsers"
  
 function Account(){
@@ -71,7 +71,16 @@ function Account(){
         setNewMessage("");
       };
 
-    const scroll = useRef()
+    //...............handling automatic scroll...............
+    const chatContainerRef = useRef();
+    useEffect(() => {
+      // Scroll to the bottom when messages change
+      scrollToBottom();
+    }, [messages]);
+
+    const scrollToBottom = () => {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    };
 
     //.............handling display sidebarn mobile...........................
     const [showSidebar, setShowSidebar] = useState(false)
@@ -82,28 +91,34 @@ function Account(){
    //........................page display..........................
     return(
       <div id="account">
+      <div className="account">
           <div className={`sidebar ${showSidebar ? 'open-sidenav' : ''}`}>
-            <div className="sidebar-header"><p>Your Communities</p></div>
+            <div className="sidebar-header"><p>Axiel</p></div>
             <div className="your-communities" >
                 {userdata && userdata.communities.map((community)=>(
-                    <div className="community" key={community} onClick={handleCommunitySelection(community)}>{community}</div>
+                    <div className="community" key={community} onClick={handleCommunitySelection(community)}>
+                      <p>{community}</p>
+                    </div>
                 ))}
             </div>
             <div className="account-nav">
-              
-              <p>Your Profile</p>
-              <p onClick={logOut}>Log Out</p>
+              <p className="community">Your Profile</p>
+              <p onClick={logOut} className="community">Log Out</p>
             </div>
           </div>
           <div className="chat-page">
               <div className="header">
                 <h1>{room}</h1>
-                <div className = "sidebar-icon" onClick={handleShowSidebar}>
-                  {showSidebar ? <FaTimes   /> : <FaBars />}
+                <div className="header-icons">
+                  <FaVideo />
+                  <FaPhone />
+                  <div className = "header-menu-icon" onClick={handleShowSidebar}>
+                    {showSidebar ? <FaTimes   /> : <FaEllipsisV />}
+                  </div>
                 </div>
               </div>
 
-              <div className="all-messages" >
+              <div className="all-messages" ref={chatContainerRef}>
                 {messages.map((message,index) => (
                   (<div key={message.id} className={`message ${message.uid === auth.currentUser.uid ? 'sent' : 'received'}`}>
                     <div style={{display: "flex", justifyContent:"space-between", alignItems: "center", gap:"2rem"}}>
@@ -127,11 +142,12 @@ function Account(){
                     placeholder="Type your message here..."
                     />
                     <button type="submit" className="send-button">
-                    Send
+                    Send <FaTelegramPlane/>
                     </button>
                   </form>
-                </div>              <div ref={scroll}></div>
+                </div>              
           </div>
+      </div>
       </div>
     )
 }
