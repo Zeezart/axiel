@@ -49,6 +49,7 @@ function Account(){
           });
           
           setMessages(messages);
+         
         });
 
         return () => unsuscribe();
@@ -98,6 +99,7 @@ function Account(){
                 {userdata && userdata.communities.map((community)=>(
                     <div className="community" key={community} onClick={handleCommunitySelection(community)}>
                       <p>{community}</p>
+                      {/* <p>{messages[messages.length-1].text}</p> */}
                     </div>
                 ))}
             </div>
