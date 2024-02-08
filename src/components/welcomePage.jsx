@@ -129,13 +129,16 @@ function WelcomePage(){
                             </div>
                             <button type="submit" className="primary-btn">Join</button>
                             
-                            {communities.length > 0 ? <div className="all-community-div">
-                                {communities.map(community => (
-                                    <div key={community.id} className = "each-community-displayed" onClick={selectCommunity}>
-                                        <p id="community-name">{community.roomName}</p>
-                                    </div>
-                                )   
-                                )}
+                            {communities.length > 0 ? <div>
+                                <p style={{textAlign: "left", marginBottom:"1rem", color: "#00A3FF"}}><small>Suggested Communities</small></p>
+                                <div className="all-community-div">
+                                    {communities.map(community => (
+                                        <div key={community.id} className = "each-community-displayed" onClick={selectCommunity}>
+                                            <p id="community-name">{community.roomName}</p>
+                                        </div>
+                                    )   
+                                    )}
+                                </div>
                             </div> : <p>Loading communities suggestions...</p>}
                     </form>            
                 </div>
