@@ -1,35 +1,25 @@
 import React, { useContext, useState, useEffect } from "react"
 import {auth,db} from "../firebase"
-import {addDoc, collection,query, onSnapshot,where,orderBy,getDocs, getDoc, updateDoc, doc,arrayUnion} from "firebase/firestore"
+import {addDoc, collection,query, limit, onSnapshot,where,orderBy,getDocs, getDoc, updateDoc, doc,arrayUnion} from "firebase/firestore"
 import { AuthContext } from "./authContext"
 import { useNavigate } from "react-router-dom"
 
 function WelcomePage(){
     //...............defining state..................
     const [joinCommunityInput, setJoinCommunityInput] = useState("")
-    const { setCommunities,setUserdata } = useContext(AuthContext)
+    const { setCommunities,setUserdata, communities } = useContext(AuthContext)
     const {room, setRoom} = useContext(AuthContext)
     const navigate = useNavigate()
 
-    // //create community
-    // const createCommunityRef = collection(db, "users");
-
-    // useEffect(() => {
-    //     const queryCommunities = query(
-    //         createCommunityRef,
-          
-    //     );
-    //     const unsuscribe = onSnapshot(queryCommunities, (snapshot) => {
-    //       let communities = [];
-    //       snapshot.forEach((doc) => {
-    //         communities.push({ ...doc.data(), id: doc.id });
-    //       });
-    //       // console.log(messages);
-    //       setCommunities(communities);
-    //     });
-
-    //     return () => unsuscribe();
-    // },[])
+   
+    //................setting community data....................
+    useEffect(() => {
+        const communityData = async () => {
+            const data = await fetchCommunities(20)
+            setCommunities(data)
+        }
+        communityData()
+    },[])
 
 
     //..................join community.........................
@@ -40,6 +30,7 @@ function WelcomePage(){
         if(room === ""){
             alert("Enter community name")
         }else{
+            //..............................checking if the current users list of community...................................
             const userEmail = auth.currentUser.email;
 
             // Create a query to find the document with the specified email
@@ -72,46 +63,57 @@ function WelcomePage(){
                     console.error('Error adding element to the array:', error);
                 }
                 setUserdata(userData)
-                console.log(userData)
-            //     const usersCollectionRef = collection(db, 'users');
-            //     const communityRef = collection(db, "communities")
+            }
 
-            //     const querySnapshot2 = await getDocs(usersCollectionRef);
+            //..............navigating to chat page when conditions are met..................
+            navigate("/account")   
 
-            //     querySnapshot2.forEach( (doc) => {
-                    
-            //     const documentId = doc.id;
-            
-            //     console.log(userData.email)
-            //     console.log(typeof userData.communities)
-            //         if (userData.communities.length > 0){
-            //             userData.communities.forEach(async (eachCommunity) => {
-            //                 try{
-            //                     await addDoc(communityRef, {
-            //                         roomName: eachCommunity
-            //                     })
-            //                 }catch{}
-            //             })
-            //         }else{
-            //             console.log("community not created")
-            //         }
-            //     });
-            //         }else{
-            //     console.log('No documents found.');
-            // } 
-        }
-            
-               
-        }
+
+            //..................checking list of existing communities........................ 
+            const communityRef = collection(db, "communities")
+            const qry = query(collection(db,"communities"), where("roomName","==",room.toLowerCase()))
+            const queryCommunity = await getDocs(qry)
         
+
+            if (queryCommunity.size > 0){
+                return
+            }else{
+                try{
+                    await addDoc(communityRef, {
+                        roomName: room.toLowerCase()
+                    })
+                }catch (error) {
+                    console.log(error)
+                }
+            } 
+        }
+    }
+
+    //...............getting the list of existing communities to be displayed....................
+    const fetchCommunities = async (limitCount) => {
+        const communityRef = collection(db, "communities")
+        const communityQuery = query(communityRef, limit(limitCount))
+        const getCommunity = await getDocs(communityQuery)
+        const communityList = getCommunity.docs.map(doc => ({
+            id: doc.id, ...doc.data()
+        }))
+        return communityList
+    }
+
+    //...................entering selected community chat room from thee list of displayed communities..................
+    const selectCommunity = (event) => {
+        const communityName = event.target.textContent
+        console.log(communityName)
+        setRoom(communityName)
         navigate("/account")
     }
 
+
+    //..........................displaying web content...............................
     return(
         <div id="welcome-page">
             <div className="signin-form-container welcome">
-                <div >
-                </div>
+                
                 <div className="form-div">
                     <h1>WELCOME TO AXIEL</h1>
                     <form onSubmit={handleJoinCommunity} className="each-welcome-option">
@@ -126,6 +128,15 @@ function WelcomePage(){
                                 />
                             </div>
                             <button type="submit" className="primary-btn">Join</button>
+                            
+                            {communities.length > 0 ? <div className="all-community-div">
+                                {communities.map(community => (
+                                    <div key={community.id} className = "each-community-displayed" onClick={selectCommunity}>
+                                        <p id="community-name">{community.roomName}</p>
+                                    </div>
+                                )   
+                                )}
+                            </div> : <p>Loading communities suggestions...</p>}
                     </form>            
                 </div>
                 

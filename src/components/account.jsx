@@ -5,16 +5,19 @@ import { AuthContext } from "./authContext"
 import {collection, onSnapshot,orderBy,query,addDoc,serverTimestamp,where, deleteDoc, doc, updateDoc, getDoc} from "firebase/firestore"
 import { FaBars, FaTimes,FaTelegramPlane, FaEllipsisV, FaVideo, FaPhone } from "react-icons/fa"
 import SearchUsers from "./searchUsers"
+import { useNavigate } from "react-router"
  
 function Account(){
     //................defining states........................
     const currentUser = useContext(AuthContext)
+    const navigate = useNavigate()
     const {room, setRoom} = useContext(AuthContext)
     const [messages, setMessages] = useState([])
     const [newMessage, setNewMessage] = useState("");
     const messagesRef = collection(db, "messages");
     const {userDetails} = useContext(AuthContext)
     const {userdata} = useContext(AuthContext)
+    const roomCase = room && room.toUpperCase()
 
 
     //................handling logout.................................
@@ -38,7 +41,7 @@ function Account(){
     useEffect(() => {
         const queryMessages = query(
           messagesRef,
-          where("room", "==", room),
+          where("room", "==", room && room.toLowerCase()),
           orderBy("createdAt")
         );
 
@@ -66,7 +69,7 @@ function Account(){
           createdAt: serverTimestamp(),
           user: auth.currentUser.displayName ? auth.currentUser.displayName : userDetails.displayName,
           uid: auth.currentUser.uid,
-          room
+          room: room&& room.toLowerCase()
         });
     
         setNewMessage("");
@@ -88,10 +91,13 @@ function Account(){
     const handleShowSidebar = () => {
       setShowSidebar(!showSidebar)
     }
-
+    const join = () => {
+      navigate('/welcome')
+    }
    //........................page display..........................
     return(
       <div id="account">
+      
       <div className="account">
           <div className={`sidebar ${showSidebar ? 'open-sidenav' : ''}`}>
             <div className="sidebar-header"><p>Axiel</p></div>
@@ -105,12 +111,13 @@ function Account(){
             </div>
             <div className="account-nav">
               <p className="community">Your Profile</p>
+              <p className="community" onClick={join}>Join New Community</p>
               <p onClick={logOut} className="community">Log Out</p>
             </div>
           </div>
           <div className="chat-page">
               <div className="header">
-                <h1>{room}</h1>
+                <h1>{roomCase&& roomCase}</h1>
                 <div className="header-icons">
                   <FaVideo />
                   <FaPhone />

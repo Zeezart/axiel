@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
   const [room, setRoom] = useState([])
   const [inChat, setInChat] = useState(false)
   const [communities, setCommunities] = useState([])
-  const [userdata, setUserdata] = useState(null)
+  const [userdata, setUserdata] = useState()
 
   useEffect(() => {
     // Set up an observer to watch for changes in authentication state

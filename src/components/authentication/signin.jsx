@@ -3,12 +3,10 @@ import { Link } from "react-router-dom"
 import { auth, provider } from "../../firebase"
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import illustration from "../../assets/signin.svg"
-// import Cookie from "universal-cookie"
-// const cookie = new Cookie()
 
 function SignIn(){
 
-    //Handling geetting user's sign in details
+    //......................Handling geetting user's sign in details.................
     const [userInput, setUserInput] = useState({
         email:"",
         password:""
@@ -24,22 +22,20 @@ function SignIn(){
     }
 
     //Handling signin authentication
-        //sign in with email
+        //....................sign in with email..........................
     const handleSignInAuth =async (e) => {
         e.preventDefault()
         try{
             const result = await signInWithEmailAndPassword(auth, userInput.email, userInput.password)
-            // cookie.set("auth-token", result.user.refreshToken)
         }catch{error => {
             console.log(error)
         }}
     }
 
-        //sign in with google
+        //..................sign in with google........................
     const signInWithGoogle = async () => {
         try{
             const result = await signInWithPopup(auth,provider)
-            // cookie.set("auth-token", result.user.refreshToken)
         }catch{error => {
             console.log(error)
         }}

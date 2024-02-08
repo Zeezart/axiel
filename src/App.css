@@ -84,6 +84,17 @@ body{
                 font-size: 1rem;
             }
         }
+        .all-community-div{
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            flex-wrap: wrap;
+            .each-community-displayed{
+                padding: 1rem;
+                border-radius: 10px;
+                background-color: var(--border-color);
+            }
+        }
     }
     p{
         text-align: center;
